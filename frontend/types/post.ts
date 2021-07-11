@@ -1,5 +1,5 @@
 import Author from './author'
-import { Section } from './section'
+import Section from './section'
 
 type PostType = {
   slug: string
@@ -12,7 +12,7 @@ type PostType = {
     url: string
   }
   content: string
-  section: Section
+  sections: Section[]
 }
 
 export default PostType

@@ -7,6 +7,7 @@ import { getAllPosts } from '../lib/api'
 import Head from '../components/Head'
 import Post from '../types/post'
 import { MetaProps } from '../types/layout'
+import Footer from '../components/footer'
 
 type Props = {
   allPosts: Post[]
@@ -42,6 +43,7 @@ const Index = ({ allPosts }: Props) => {
           )}
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
         </Container>
+        <Footer />
       </Layout>
     </>
   )

@@ -1,7 +1,8 @@
 import fs from 'fs'
 import { join } from 'path'
 import matter from 'gray-matter'
-import { Section } from '../types/section'
+import Section, { SectionNSlug } from '../types/section'
+import PostType from '../types/post'
 
 const postsDirectory = join(process.cwd(), '_posts')
 
@@ -9,14 +10,28 @@ export function getPostSlugs() {
   return fs.readdirSync(postsDirectory)
 }
 
-export function getPostBySlug(slug: string[], fields: string[] = [],) {
-  //@ts-ignore
-  const realSlug = slug[0].replace(/\.md$/, '');
+
+export function getSectionBySlug(slug: string[], fields: string[] = []): SectionNSlug {
+
+  const post = getPostBySlug(slug[0], ['sections', 'ogImage', 'excerpt', 'title', 'date', 'slug']);
+  // @ts-ignore
+  const section: Section = post.sections[Number(slug[1])]
+  // @ts-ignore
+  const postWithoutSections = (({ sections, ...o }: PostType) => o)(post)
+
+  return { section, post: postWithoutSections };
+}
+
+export function getPostBySlug(slug: string, fields: string[] = [],) {
+  const realSlug = slug.toString().replace(/\.md$/, '');
   const fullPath = join(postsDirectory, `${realSlug}.md`)
   const fileContents = fs.readFileSync(fullPath, 'utf8')
   const md = matter(fileContents, { excerpt: true, sections: true })
 
-  type Items = {
+  interface Items {
+    /**
+     * For the meta tag `og:type`
+     */
     [key: string]: string | Section[]
   }
 
@@ -50,7 +65,7 @@ export function getPostBySlug(slug: string[], fields: string[] = [],) {
 export function getAllPosts(fields: string[] = []) {
   const slugs = getPostSlugs()
   const posts = slugs
-    .map((slug) => getPostBySlug([slug], fields))
+    .map((slug) => getPostBySlug(slug, fields))
     // sort posts by date in descending order
     .sort((post1, post2) => (post1.date > post2.date ? -1 : 1))
   return posts
