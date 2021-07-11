@@ -52,14 +52,21 @@ const Post = ({ post, section, morePosts }: Props) => {
                                         date={post.date}
                                         author={post.author}
                                     />
-                                    {/* <PostBody content={post.content} /> */}
+                                    <PostBody content={post.content} />
                                 </article>
                             </Container>
                             <Footer />
                         </Layout >
                     </>
                 ) : section?.content ? (
-                    <><h1>{section.content}</h1></>
+                    <>
+                        <Layout>
+                            <Container>
+                                <Header />
+                                <h1>{section.content}</h1>
+                            </Container>
+                        </Layout >
+                    </>
                 ) : <></>
             }
         </>

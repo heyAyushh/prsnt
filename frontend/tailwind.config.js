@@ -25,10 +25,18 @@ module.exports = {
             'blockquote p:first-of-type::before': false,
             'blockquote p:last-of-type::after': false,
           },
+          colors: {
+            'accent-1': '#FAFAFA',
+            'accent-2': '#EAEAEA',
+            'accent-7': '#333',
+            success: '#0070f3',
+            cyan: '#79FFE1',
+          },
         },
         dark: {
           css: {
             color: theme('colors.gray.300'),
+
             a: {
               color: theme('colors.blue.400'),
               '&:hover': {
@@ -64,6 +72,13 @@ module.exports = {
                 borderBottomColor: theme('colors.gray.700'),
               },
             },
+          },
+          colors: {
+            'accent-1': '#FAFAFA',
+            'accent-2': '#EAEAEA',
+            'accent-7': '#333',
+            success: '#0070f3',
+            cyan: '#79FFE1',
           },
         },
       }),
