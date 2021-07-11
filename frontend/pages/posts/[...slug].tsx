@@ -8,7 +8,6 @@ import Layout from '../../components/layout'
 import { getPostBySlug, getAllPosts } from '../../lib/api'
 import PostTitle from '../../components/post-title'
 import Head from '../../components/Head'
-import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import PostType from '../../types/post'
 import { MetaProps } from '../../types/layout'
@@ -61,11 +60,14 @@ export default Post
 
 type Params = {
   params: {
-    slug: string
+    slug: string[],
   }
 }
 
 export async function getStaticProps({ params }: Params) {
+
+  console.log(params)
+
   const post = getPostBySlug(params.slug, [
     'title',
     'date',
@@ -74,8 +76,9 @@ export async function getStaticProps({ params }: Params) {
     'content',
     'ogImage',
     'coverImage',
+    'sections'
   ])
-  const content = await markdownToHtml(post.content || '')
+  const content = await markdownToHtml(String(post.content) || '')
 
   return {
     props: {
@@ -88,13 +91,14 @@ export async function getStaticProps({ params }: Params) {
 }
 
 export async function getStaticPaths() {
+
   const posts = getAllPosts(['slug'])
 
   return {
     paths: posts.map((posts) => {
       return {
         params: {
-          slug: posts.slug,
+          slug: [posts.slug],
         },
       }
     }),
