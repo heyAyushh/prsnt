@@ -17,7 +17,13 @@ title: First section
 
 ---
 
-Section one.
+## Section one.
+
+```js
+
+console.log("hello")
+
+```
 
 ---2
 title: Second section

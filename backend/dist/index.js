@@ -14,25 +14,16 @@ const io = new socket_io_1.Server(server, {
         methods: ["GET", "POST"]
     }
 });
-app.get('/', (_req, res) => {
-    return res.send('Hello World');
-});
-let interval;
 io.on("connection", (socket) => {
     console.log("New client connected");
-    if (interval) {
-        clearInterval(interval);
-    }
-    interval = setInterval(() => getApiAndEmit(socket), 1000);
     socket.on("disconnect", () => {
         console.log("Client disconnected");
-        clearInterval(interval);
+    });
+    socket.on("emoji", (data) => {
+        console.log(data);
+        io.emit("reaction", data);
     });
 });
-const getApiAndEmit = (socket) => {
-    const response = new Date();
-    socket.emit("FromAPI", response);
-};
 server.listen(3000, () => {
     console.log('listening on *:3000');
 });

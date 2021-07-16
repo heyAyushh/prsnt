@@ -13,18 +13,29 @@ import PostType from '../../types/post'
 import { MetaProps } from '../../types/layout'
 import Section from '../../types/section'
 import Footer from '../../components/footer'
+import socketIOClient from "socket.io-client";
+import React, { useState, useEffect } from "react";
+import EmojiButtons from "../../components/emojiButton";
+import { useSocket } from 'use-socketio'
 
 type Props = {
     post: PostType
     morePosts: PostType[]
+    slug: string[]
     section?: Section
 }
 
-const Post = ({ post, section, morePosts }: Props) => {
+const Post = ({ post, section, morePosts, slug }: Props) => {
     const router = useRouter()
     if (!router.isFallback && !post?.slug) {
         return <ErrorPage statusCode={404} />
     }
+
+    const { socket, subscribe, unsubscribe } = useSocket("reaction", (data) => {
+        if (slug.join('/') === data.path)
+            console.log(data)
+    });
+
 
     const meta: MetaProps = {
         date: post.date,
@@ -44,28 +55,35 @@ const Post = ({ post, section, morePosts }: Props) => {
                         <Layout>
                             <Container>
                                 <Header />
-                                <article className="mb-32">
-                                    {Head({ customMeta: meta })}
-                                    <PostHeader
-                                        title={post.title}
-                                        coverImage={post.coverImage}
-                                        date={post.date}
-                                        author={post.author}
-                                    />
-                                    <PostBody content={post.content} />
-                                </article>
+                                <div className="flex">
+
+                                    <article className="mb-32 m-auto text-center">
+                                        {Head({ customMeta: meta })}
+                                        <PostHeader
+                                            title={post.title}
+                                            coverImage={post.coverImage}
+                                            date={post.date}
+                                            author={post.author}
+                                        />
+                                        <PostBody content={post.content} />
+                                    </article>
+                                </div>
                             </Container>
                             <Footer />
                         </Layout >
                     </>
                 ) : section?.content ? (
                     <>
-                        <Layout>
-                            <Container>
+                        <Container >
+                            <div className='flex flex-col min-h-screen'>
                                 <Header />
-                                <h1>{section.content}</h1>
-                            </Container>
-                        </Layout >
+                                {Head({ customMeta: meta })}
+                                <div className="flex h-full justify-center items-center flex-1">
+                                    <PostBody content={section.content} />
+                                </div>
+                                <EmojiButtons path={`${slug.join('/')}`} />
+                            </div>
+                        </Container>
                     </>
                 ) : <></>
             }
@@ -102,12 +120,12 @@ export async function getStaticProps({ params }: Params) {
                     ...post,
                     content,
                 },
+                slug: params.slug,
             },
         }
     } else {
         const { section, post } = getSectionBySlug(params.slug)
         const content = await markdownToHtml(String(section.content) || '')
-
 
         return {
             props: {
@@ -117,7 +135,8 @@ export async function getStaticProps({ params }: Params) {
                 section: {
                     ...section,
                     content,
-                }
+                },
+                slug: params.slug,
             },
         }
     }
