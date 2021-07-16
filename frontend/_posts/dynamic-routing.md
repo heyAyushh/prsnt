@@ -19,7 +19,7 @@ title: First section
 
 ## Section one.
 
-```js
+```ts twoslash
 
 console.log("hello")
 
