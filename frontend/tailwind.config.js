@@ -1,4 +1,4 @@
-const { spacing } = require('tailwindcss/defaultTheme');
+const { spacing, fontFamily } = require('tailwindcss/defaultTheme');
 
 module.exports = {
   purge: ['./components/**/*.tsx', './pages/**/*.tsx'],
@@ -7,10 +7,21 @@ module.exports = {
 
   theme: {
     extend: {
+      colors: {
+        'light-accent-1': '#FAFAFA',
+        'light-accent-2': '#EAEAEA',
+        'light-accent-7': '#333',
+        'light-success': '#0070f3',
+        cyan: '#79FFE1',
+        'dark-accent-1': '#121212',
+        'dark-accent-2': '#2F2F2F',
+        'dark-accent-7': '#FFFFFF',
+        'dark-success': '#0070f3',
+      },
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            color: theme('colors.gray.700'),
+            color: theme('light-accent-1'),
             a: {
               color: theme('colors.blue.500'),
               '&:hover': {
@@ -25,17 +36,10 @@ module.exports = {
             'blockquote p:first-of-type::before': false,
             'blockquote p:last-of-type::after': false,
           },
-          colors: {
-            'accent-1': '#FAFAFA',
-            'accent-2': '#EAEAEA',
-            'accent-7': '#333',
-            success: '#0070f3',
-            cyan: '#79FFE1',
-          },
         },
         dark: {
           css: {
-            color: theme('colors.gray.300'),
+            color: theme('dark-accent-1'),
 
             a: {
               color: theme('colors.blue.400'),
@@ -73,13 +77,6 @@ module.exports = {
               },
             },
           },
-          colors: {
-            'accent-1': '#FAFAFA',
-            'accent-2': '#EAEAEA',
-            'accent-7': '#333',
-            success: '#0070f3',
-            cyan: '#79FFE1',
-          },
         },
       }),
       spacing: {
@@ -100,6 +97,9 @@ module.exports = {
       boxShadow: {
         small: '0 5px 10px rgba(0, 0, 0, 0.12)',
         medium: '0 8px 30px rgba(0, 0, 0, 0.12)',
+      },
+      fontFamily: {
+        sans: ['Inter var', fontFamily.sans],
       },
     },
   },

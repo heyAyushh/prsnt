@@ -5,7 +5,8 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head />
-        <body className="bg-white dark:bg-black text-gray-900 dark:text-white">
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
+        <body className="bg-white  dark:bg-black text-gray-900 dark:text-white ">
           <Main />
           <NextScript />
         </body>

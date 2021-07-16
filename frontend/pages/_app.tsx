@@ -7,8 +7,8 @@ import '../styles/index.css';
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
-    <ThemeProvider attribute="class" enableSystem={false} defaultTheme="dark">
-      <Component {...pageProps} />
+    <ThemeProvider attribute="class" enableSystem={false} defaultTheme="system" >
+      <Component className='root' {...pageProps} />
     </ThemeProvider>
   );
 };
