@@ -14,9 +14,10 @@ import { useSocket } from "use-socketio";
 
 type Props = {
     path: string
+    classes?: string
 }
 
-export default function EmojiButtons({ path }: Props) {
+export default function EmojiButtons({ path, classes }: Props) {
     const emojis = [{
         name: 'heart',
         data: heart,
@@ -56,11 +57,11 @@ export default function EmojiButtons({ path }: Props) {
 
             return (
                 <motion.button
-                    className='w-10 sm:w-12 md:w-20 m-1 lg:w-48'
+                    className='w-10 sm:w-12 md:w-20 m-1 lg:w-30'
                     key={`motion-lottie-emoji-${i}`}
                     onClick={() => {
                         socket.emit("emoji", {
-                            emoji: emojis[i].name,
+                            name: emojis[i].name,
                             path
                         });
                         return paused ? setPaused(p => !p) : ''
@@ -90,8 +91,8 @@ export default function EmojiButtons({ path }: Props) {
         })
 
     return (
-        <div className="flex flex-row flex-wrap rounded-full justify-around bg-gradient-to-r m-8 from-green-400 to-blue-500 lg:">
+        <div className={`flex flex-row flex-wrap rounded-t-3xl justify-around border-10 fixed bottom-0 w-screen lg:w-2/3 xl:w-1/3  bg-light-accent-2 dark:bg-dark-accent-1 lg:bg-transparent m-2 ${classes ? classes : ''}`}>
             {defaultOptions()}
-        </div>
+        </div >
     );
 }

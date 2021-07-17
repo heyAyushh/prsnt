@@ -17,12 +17,27 @@ title: First section
 
 ---
 
-## Section one.
+# Section one.
 
 ```ts twoslash
+function sumOfDigits(num: number): number {
+  if (num == 0) {
+    return 0;
+  }
+  return (num % 10) + sumOfDigits(Math.floor(num / 10));
+}
+```
 
-console.log("hello")
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. 
 
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("hello world")
+}
 ```
 
 ---2

@@ -37,6 +37,8 @@ pre {
 
   margin-bottom: 3rem;
 
+  @apply break-words;
+
   /* Important to allow the code to move horizontally; */
   overflow-x: auto;
   position: relative;
@@ -129,7 +131,7 @@ pre .code-container:hover a {
 pre code {
   font-size: 15px;
   font-family: "JetBrains Mono", Menlo, Monaco, Consolas, Courier New, monospace;
-  white-space: pre;
+  @apply whitespace-pre-wrap sm:whitespace-pre;
   -webkit-overflow-scrolling: touch;
 }
 pre code a {

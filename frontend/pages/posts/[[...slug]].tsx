@@ -13,10 +13,10 @@ import PostType from '../../types/post'
 import { MetaProps } from '../../types/layout'
 import Section from '../../types/section'
 import Footer from '../../components/footer'
-import socketIOClient from "socket.io-client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import EmojiButtons from "../../components/emojiButton";
 import { useSocket } from 'use-socketio'
+import Fly from '../../components/fly';
 
 type Props = {
     post: PostType
@@ -31,11 +31,14 @@ const Post = ({ post, section, morePosts, slug }: Props) => {
         return <ErrorPage statusCode={404} />
     }
 
+    const ref = useRef(null);
+
     const { socket, subscribe, unsubscribe } = useSocket("reaction", (data) => {
         if (slug.join('/') === data.path)
-            console.log(data)
+            console.log('hello')
+        //@ts-ignore
+        ref.current.addEmoji(data);
     });
-
 
     const meta: MetaProps = {
         date: post.date,
@@ -74,16 +77,15 @@ const Post = ({ post, section, morePosts, slug }: Props) => {
                     </>
                 ) : section?.content ? (
                     <>
-                        <Container >
-                            <div className='flex flex-col min-h-screen'>
-                                <Header />
-                                {Head({ customMeta: meta })}
-                                <div className="flex h-full justify-center items-center flex-1">
-                                    <PostBody content={section.content} />
-                                </div>
-                                <EmojiButtons path={`${slug.join('/')}`} />
+                        <div className='container mx-auto px-6 flex flex-col min-h-screen absolute'>
+                            <Header />
+                            {Head({ customMeta: meta })}
+                            <div className="flex h-full justify-center items-center flex-1">
+                                <PostBody content={section.content} />
                             </div>
-                        </Container>
+                        </div>
+                        <EmojiButtons path={`${slug.join('/')}`} classes="z-20" />
+                        <Fly ref={ref} classes="absolute" />
                     </>
                 ) : <></>
             }
