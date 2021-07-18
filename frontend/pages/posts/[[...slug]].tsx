@@ -17,15 +17,18 @@ import React, { useState, useEffect, useRef } from "react";
 import EmojiButtons from "../../components/emojiButton";
 import { useSocket } from 'use-socketio'
 import Fly from '../../components/fly';
+import { motion } from 'framer-motion'
+import { useKey } from 'rooks';
 
 type Props = {
     post: PostType
     morePosts: PostType[]
     slug: string[]
     section?: Section
+    total?: Number
 }
 
-const Post = ({ post, section, morePosts, slug }: Props) => {
+const Post = ({ post, section, morePosts, slug, total }: Props) => {
     const router = useRouter()
     if (!router.isFallback && !post?.slug) {
         return <ErrorPage statusCode={404} />
@@ -38,6 +41,25 @@ const Post = ({ post, section, morePosts, slug }: Props) => {
             console.log('hello')
         //@ts-ignore
         ref.current.addEmoji(data);
+    });
+
+    const nextPage = () => {
+        slug.push('1');
+        router.push('/posts/' + slug.join('/'))
+    }
+
+    useKey(['ArrowRight'], () => {
+        if (slug[1] && total && total !== Number(slug[1]) && total > Number(slug[1])) {
+            slug[1] = String(Number(slug[1]) + 1)
+            router.push('/posts/' + slug.join('/'))
+        }
+    });
+
+    useKey(['ArrowLeft'], () => {
+        if (slug[1] && total && Number(slug[1]) > 0) {
+            slug[1] = String(Number(slug[1]) - 1)
+            router.push('/posts/' + slug.join('/'))
+        }
     });
 
     const meta: MetaProps = {
@@ -59,7 +81,6 @@ const Post = ({ post, section, morePosts, slug }: Props) => {
                             <Container>
                                 <Header />
                                 <div className="flex">
-
                                     <article className="mb-32 m-auto text-center">
                                         {Head({ customMeta: meta })}
                                         <PostHeader
@@ -69,23 +90,51 @@ const Post = ({ post, section, morePosts, slug }: Props) => {
                                             author={post.author}
                                         />
                                         <PostBody content={post.content} />
+                                        <button
+                                            onClick={nextPage}
+                                            className="mx-3 bg-black dark:bg-white hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white border border-black dark:border-white text-white dark:text-black font-bold py-3 px-12 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0"
+                                        >
+                                            Checkout prsnts 🍿
+                                        </button>
                                     </article>
                                 </div>
                             </Container>
                             <Footer />
                         </Layout >
                     </>
-                ) : section?.content ? (
+                ) : total && section?.content ? (
                     <>
-                        <div className='container mx-auto px-6 flex flex-col min-h-screen absolute'>
-                            <Header />
-                            {Head({ customMeta: meta })}
-                            <div className="flex h-full justify-center items-center flex-1">
-                                <PostBody content={section.content} />
+                        <motion.div className='overflow-hidden'
+                            drag
+                            onDragEnd={
+                                (event, info) => {
+                                    if (total >= Number(slug[1])) {
+                                        if (info.velocity.x < -500 && total !== Number(slug[1])) {
+                                            // right to left // next page
+                                            slug[1] = String(Number(slug[1]) + 1)
+                                            router.push('/posts/' + slug.join('/'))
+                                        } else if (info.velocity.x > 500 && Number(slug[1]) > 0) {
+                                            // exact opposite // next page
+                                            slug[1] = String(Number(slug[1]) - 1)
+                                            router.push('/posts/' + slug.join('/'))
+                                        }
+                                    }
+                                }
+                            }
+                            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                            dragElastic={0.1}
+                        >
+                            <div className='container mx-auto px-6 flex flex-col min-h-screen relative'>
+                                <Header />
+                                {Head({ customMeta: meta })}
+                                <div
+                                    className="flex drag h-full justify-center items-center flex-1">
+                                    <PostBody content={section.content} />
+                                </div>
+                                <Fly ref={ref} classes="inset-x-2/4 absolute" />
                             </div>
-                        </div>
-                        <EmojiButtons path={`${slug.join('/')}`} classes="z-20" />
-                        <Fly ref={ref} classes="absolute" />
+                            <EmojiButtons path={`${slug.join('/')}`} classes="z-20" />
+                        </motion.div>
                     </>
                 ) : <></>
             }
@@ -126,7 +175,7 @@ export async function getStaticProps({ params }: Params) {
             },
         }
     } else {
-        const { section, post } = getSectionBySlug(params.slug)
+        const { section, post, total } = getSectionBySlug(params.slug)
         const content = await markdownToHtml(String(section.content) || '')
 
         return {
@@ -139,6 +188,7 @@ export async function getStaticProps({ params }: Params) {
                     content,
                 },
                 slug: params.slug,
+                total: total
             },
         }
     }
@@ -170,6 +220,6 @@ export async function getStaticPaths() {
 
     return {
         paths: paths,
-        fallback: false,
+        fallback: 'blocking',
     }
 }

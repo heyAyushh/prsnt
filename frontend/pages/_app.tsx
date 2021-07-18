@@ -9,7 +9,7 @@ import { SocketIOProvider, useSocket } from "use-socketio";
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <ThemeProvider attribute="class" enableSystem={true} defaultTheme="system" >
-      <SocketIOProvider url="http://localhost:3000">
+      <SocketIOProvider url={`${process.env.NEXT_PUBLIC_SERVER_URL}`}>
         <Component className='root' {...pageProps} />
       </SocketIOProvider>
     </ThemeProvider>

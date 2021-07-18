@@ -1,6 +1,5 @@
 import remark from 'remark'
 import html from 'remark-html'
-import code from '@stefanprobst/remark-shiki'
 import remarkShikiTwoslash from 'remark-shiki-twoslash'
 
 export default async function markdownToHtml(markdown: string) {

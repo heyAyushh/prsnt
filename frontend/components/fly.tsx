@@ -15,22 +15,26 @@ interface Props {
     isVisible?: Boolean
 }
 
-const fly = forwardRef(({ classes, isVisible=true }: Props, ref) => {
+interface emo {
+    name: string,
+    animationData: any,
+    initialSegment: any,
+    loop: Boolean,
+    autoplay: Boolean,
+    rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice"
+    },
+    key: any
+}
+
+const fly = forwardRef(({ classes, isVisible = true }: Props, ref) => {
 
     const size: Size = useWindowSize();
 
+    const random = () => Math.random();
+
     const [paused, setPaused] = useState(false);
-    const [emo, setEmo] = useState(emojis.map(emoji => ({
-        name: emoji.name,
-        animationData: emoji.data,
-        initialSegment: emoji.initialSegment,
-        loop: true,
-        autoplay: true,
-        rendererSettings: {
-            preserveAspectRatio: "xMidYMid slice"
-        },
-        key: uuidv4()
-    })));
+    const [emo, setEmo] = useState<emo[] | []>([]);
 
     const addEmoji = (emEvent: any) => {
 
@@ -59,18 +63,19 @@ const fly = forwardRef(({ classes, isVisible=true }: Props, ref) => {
     });
 
     return (
-        <div className={`flex justify-center min-h-screen ${classes ? classes : ''}`}>
+        <div className={`${classes ? classes : ''}`}>
             <AnimatePresence>
                 {isVisible && emo.map((animdata, i) =>
                     <motion.div
-                        className='h-16 w-16 mx-1'
+                        className='h-16 w-16 mx-1 absolute bottom-0'
                         animate={{
                             scale: [1, 0.9, 0.8, 0.7, 0.9, 0.8, 1],
                             borderRadius: ["20%", "20%", "50%", "50%", "20%"],
                             y: 0,
                             x: 0,
                             opacity: 0.005,
-                            translateX: [-90, 0, -90, 0, -90, 0, -90, 0, -90, 0, -90]
+                            translateX: [-90, 0, -90, 0, -90, 0, -90, 0, -90, 0, -90],
+                            display: 'block'
                         }}
 
                         transition={{
@@ -80,10 +85,13 @@ const fly = forwardRef(({ classes, isVisible=true }: Props, ref) => {
                             duration: 10,
                         }}
 
-                        initial={{ y: size.innerHeight ? size.innerHeight - 100 : 400 }}
+                        initial={{
+                            y: size.innerHeight ? size.innerHeight : 400,
+                            display: 'none',
+                            x: size.innerWidth ? (size.innerWidth / 4) - (random() < 0.5 ? random() * -30 : random() * 30) : 400
+                        }}
 
                         onAnimationComplete={definition => {
-                            console.log(definition)
                             setEmo(emo.filter(em => animdata.key != em.key))
                         }}
 
@@ -92,16 +100,15 @@ const fly = forwardRef(({ classes, isVisible=true }: Props, ref) => {
                         onHoverStart={() => paused ? setPaused(p => !p) : ''}
                     >
                         <Lottie
-                            key={uuidv4()}
+                            key={animdata.key}
                             isStopped={paused}
-                            // isPaused={paused}
+                            // @ts-ignore
                             options={animdata}
                             isClickToPauseDisabled={true}
                             eventListeners={[{
                                 eventName: 'complete',
                                 callback: () => setPaused(p => !p),
                             }]}
-
                         />
                     </motion.div >
                 )}

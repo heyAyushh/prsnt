@@ -19,7 +19,7 @@ export function getSectionBySlug(slug: string[], fields: string[] = []): Section
   // @ts-ignore
   const postWithoutSections = (({ sections, ...o }: PostType) => o)(post)
 
-  return { section, post: postWithoutSections };
+  return { section, post: postWithoutSections, total: post.sections.length - 1 };
 }
 
 export function getPostBySlug(slug: string, fields: string[] = [],) {
@@ -37,6 +37,7 @@ export function getPostBySlug(slug: string, fields: string[] = [],) {
 
   const items: Items = {}
 
+  //@ts-ignore
   md.sections.unshift({
     key: '0',
     data: JSON.stringify(md.data),
@@ -52,6 +53,7 @@ export function getPostBySlug(slug: string, fields: string[] = [],) {
       items[field] = md.content
     }
     if (field === 'sections') {
+      //@ts-ignore
       items[field] = md.sections
     }
     if (md.data[field]) {

@@ -8,7 +8,8 @@ type Section = {
 
 export type SectionNSlug = {
     section: Section,
-    post: MetaProps
+    post: MetaProps,
+    total: Number
 }
 
 export default Section

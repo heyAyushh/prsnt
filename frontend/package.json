@@ -8,7 +8,6 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@stefanprobst/remark-shiki": "^0.1.2",
     "@tailwindcss/typography": "^0.4.1",
     "classnames": "2.3.1",
     "date-fns": "2.21.3",
@@ -19,12 +18,9 @@
     "next": "latest",
     "next-themes": "0.0.15",
     "react": "^17.0.2",
-    "react-blurhash": "^0.1.3",
     "react-dom": "^17.0.2",
     "react-lottie": "^1.2.3",
-    "react-lottie-segments": "^1.4.9",
     "remark": "13.0.0",
-    "remark-code-screenshot": "^1.0.0",
     "remark-html": "13.0.1",
     "remark-shiki-twoslash": "^2.0.1",
     "rooks": "^5.1.0",

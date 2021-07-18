@@ -1,23 +1,31 @@
 ---
-title: "Dynamic Routing and Static Generation"
-excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+title: "Introducing Prsnts 🎉"
+excerpt: "You won't believe what happened next"
 coverImage: "/assets/blog/dynamic-routing/cover.jpg"
-date: "2020-03-16T05:35:07.322Z"
+date: "2021-07-18T05:35:07.322Z"
 author:
-  name: JJ Kasper
+  name: Ayush Chauhan
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/dynamic-routing/cover.jpg"
 ---
 
-## This is an excerpt.
+# Yooo! Ready for first Prsnt?
+  
+Let me tell you the story for why we needed this.
+
 
 ---1
 title: First section
 
 ---
 
-# Section one.
+## So, We were in a Clubhouse room 👋
+
+And the speaker wanted a tool,   
+Which would let him show   
+* markdown slides
+* live reactions
 
 ```ts twoslash
 function sumOfDigits(num: number): number {
@@ -30,15 +38,6 @@ function sumOfDigits(num: number): number {
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. 
 
-```go
-package main
-
-import "fmt"
-
-func main() {
-    fmt.Println("hello world")
-}
-```
 
 ---2
 title: Second section
@@ -48,6 +47,7 @@ title: Second section
 Part 1.
 
 ---
+
 
 Part 2.
 
