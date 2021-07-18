@@ -84,14 +84,13 @@ export default function EmojiButtons({ path, classes }: Props) {
                             eventName: 'complete',
                             callback: () => setPaused(p => !p),
                         }]}
-
                     />
                 </motion.button >
             )
         })
 
     return (
-        <div className={`flex flex-row flex-wrap rounded-t-3xl justify-around border-10 fixed bottom-0 w-screen lg:w-2/3 xl:w-1/3  bg-light-accent-2 dark:bg-dark-accent-1 lg:bg-transparent m-2 ${classes ? classes : ''}`}>
+        <div className={`flex flex-row flex-wrap rounded-t-3xl justify-around fixed sm:-m-20 bottom-10 lg:bottom-0 border-10 w-screen lg:w-2/3 xl:w-1/3 lg:m-2 bg-light-accent-2 dark:bg-dark-accent-1 lg:bg-transparent ${classes ? classes : ''}`}>
             {defaultOptions()}
         </div >
     );

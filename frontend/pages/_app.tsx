@@ -1,5 +1,6 @@
 import { AppProps } from 'next/app'
 import '../styles/index.css'
+import 'inter-ui/inter.css';
 
 import { ThemeProvider } from 'next-themes';
 import React from 'react';

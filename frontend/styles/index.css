@@ -35,13 +35,10 @@ pre {
   /* Give it some space to breathe */
   padding: 12px;
 
-  margin-bottom: 3rem;
-
   @apply break-words;
 
   /* Important to allow the code to move horizontally; */
   overflow-x: auto;
-  position: relative;
 }
 pre.shiki {
   overflow-x: auto;
@@ -99,6 +96,7 @@ pre.twoslash data-lsp:hover::before {
 
 pre .code-container {
   overflow: auto;
+  @apply m-4
 }
 /* The try button */
 pre .code-container > a {

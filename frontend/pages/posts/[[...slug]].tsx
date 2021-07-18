@@ -81,7 +81,7 @@ const Post = ({ post, section, morePosts, slug, total }: Props) => {
                             <Container>
                                 <Header />
                                 <div className="flex">
-                                    <article className="mb-32 m-auto text-center">
+                                    <article className="mb-32 m-auto">
                                         {Head({ customMeta: meta })}
                                         <PostHeader
                                             title={post.title}
@@ -92,7 +92,7 @@ const Post = ({ post, section, morePosts, slug, total }: Props) => {
                                         <PostBody content={post.content} />
                                         <button
                                             onClick={nextPage}
-                                            className="mx-3 bg-black dark:bg-white hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white border border-black dark:border-white text-white dark:text-black font-bold py-3 px-12 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0"
+                                            className="mx-3 bg-black dark:bg-white hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white border border-black dark:border-white text-white dark:text-black font-bold py-3 px-12 lg:px-8 duration-200 transition-colors lg:mb-0"
                                         >
                                             Checkout prsnts 🍿
                                         </button>
@@ -105,7 +105,7 @@ const Post = ({ post, section, morePosts, slug, total }: Props) => {
                 ) : total && section?.content ? (
                     <>
                         <motion.div className='overflow-hidden'
-                            drag
+                            drag="x"
                             onDragEnd={
                                 (event, info) => {
                                     if (total >= Number(slug[1])) {
@@ -121,7 +121,8 @@ const Post = ({ post, section, morePosts, slug, total }: Props) => {
                                     }
                                 }
                             }
-                            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                            dragDirectionLock
+                            dragConstraints={{ left: 0, right: 0 }}
                             dragElastic={0.1}
                         >
                             <div className='container mx-auto px-6 flex flex-col min-h-screen relative'>
