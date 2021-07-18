@@ -6,11 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const socket_io_1 = require("socket.io");
+require("dotenv/config");
 const app = express_1.default();
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: "http://localhost:3001",
+        origin: process.env.ORIGIN,
         methods: ["GET", "POST"]
     }
 });
@@ -24,7 +25,7 @@ io.on("connection", (socket) => {
         io.emit("reaction", data);
     });
 });
-server.listen(3000, () => {
-    console.log('listening on *:3000');
+server.listen(process.env.PORT || 3000, () => {
+    console.log(`listening on *:${process.env.PORT || 3000}`);
 });
 //# sourceMappingURL=index.js.map
